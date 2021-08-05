@@ -6,7 +6,7 @@ HOST=${PGDUMP_HOST:-"127.0.0.1"}
 PORT=${PGDUMP_PORT:-5432}
 USER=${PGDUMP_USER:-"postgres"}
 DEL_OLD=${PGDUMP_DELETE_OLD:-false}
-HOST=${PGDUMP_RETENTION:-14}
+RETENTION=${PGDUMP_RETENTION:-14}
 
 # set the PGPASSWORD environment variable, for connecting to the server via username/password
 export PGPASSWORD=$PGDUMP_PWD
@@ -28,6 +28,11 @@ pg_dump -h $HOST -p $PORT -U $USER -Fc -f $ARCHIVE $DB
 
 #finished
 echo "Backup complete"
+if [ "$DEL_OLD" = true ] ; then
+  #clean up old backup files
+  find . -name $DB"-*.archive" -type f -mtime +$RETENTION -exec rm -f {} \;
+  echo 'Old backups removed'
+else
+  echo 'deleting of old backups is disabled'
+fi
 
-#clean up old backup files
-find . -name $DB"-*.archive" -type f -mtime +$PGDUMP_RETENTION -exec rm -f {} \;
