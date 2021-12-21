@@ -36,3 +36,9 @@ else
   echo 'deleting of old backups is disabled'
 fi
 
+if [[ -z "${CALLBACK_URL}" ]]; then
+  echo "no callback defined"
+else
+  echo "calling callback URL with curl"
+  curl ${CALLBACK_URL}
+fi
