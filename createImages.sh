@@ -4,5 +4,6 @@ TARGET_TAGS=('10.20-alpine' '10-alpine' '11-alpine' '11.15-alpine' '12-alpine' '
 
 for target_tag in "${TARGET_TAGS[@]}"
 do
-  docker build -t pgdockerdump:$version-"$target_tag" --build-arg PG_TAG="$target_tag" .
+  docker build -t snieuw/pgdockerdump:$version-"$target_tag" --build-arg PG_TAG="$target_tag" .
+  docker push snieuw/pgdockerdump:$version-"$target_tag"
 done
